@@ -13,7 +13,7 @@ class IdType:
     @classmethod
     def save_to_database(cls, obj):
         new_id = database_lib.data_base.data[cls.type_name].add_element(obj)
-        return IdType(new_id)
+        return cls(new_id)
 
     @classmethod
     def max_id(cls):

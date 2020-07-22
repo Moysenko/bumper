@@ -14,7 +14,7 @@ class Comment:
     def create_comment(*args, **kwargs):
         new_comment = Comment(*args, **kwargs)
         if new_comment.id is None:
-            new_comment.id = idtype_lib.IdType.save_to_database(new_comment)
+            new_comment.id = idtype_lib.CommentId.save_to_database(new_comment)
         return new_comment
 
 
@@ -23,7 +23,13 @@ class CommentSection:
         self._comments = comments if comments is not None else []
 
     def add_comment(self, comment):
-        self._comments.append(comment)
+        print('COMMENT ADDED')
+        if isinstance(comment, Comment):
+            self._comments.append(comment.id)
+        elif isinstance(comment, idtype_lib.CommentId):
+            self._comments.append(comment)
+        else:
+            raise TypeError("Only object of Comment class or CommentId class can be added to CommentSection")
 
     def to_defaultdict(self):
         children_dict = defaultdict(list)
@@ -35,3 +41,9 @@ class CommentSection:
             children_dict[key].sort(key=lambda reply_id: reply_id.instance().record_information.date)
 
         return children_dict
+
+    def is_empty(self):
+        return len(self._comments) == 0
+
+    def __len__(self):
+        return len(self._comments)

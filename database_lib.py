@@ -12,6 +12,12 @@ class DataList:
         else:
             raise IndexError(f"There is no element in database with id = {element_id}")
 
+    def __getitem__(self, index):
+        return self.data[index]
+
+    def __len__(self):
+        return len(self.data)
+
 
 class Singleton(object):
     def __new__(cls):
