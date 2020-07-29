@@ -1,4 +1,4 @@
-import idtype_lib
+from . import idtype_lib
 
 
 class Creator:

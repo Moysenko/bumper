@@ -1,16 +1,19 @@
-import comment_lib
-import idtype_lib
-import post_lib
-import content_lib
-import record_information_lib
-import feed_lib
-import creator_lib
-import database_lib
+from . import comment_lib
+from . import idtype_lib
+from . import post_lib
+from . import content_lib
+from . import record_information_lib
+from . import feed_lib
+from . import creator_lib
+from . import database_lib
 
 
 class Scanner:
     @staticmethod
-    def get_content():
+    def get_content(data=None):
+        if data is not None:
+            return content_lib.Content(data)
+
         print('Что у вас нового?')
         content = content_lib.Content()
 
@@ -34,15 +37,18 @@ class Scanner:
                 pass
 
     @staticmethod
-    def get_record_information():
-        author_id = Scanner.scan_type(int, "Ваш id: ")
-        return record_information_lib.RecordInformation(idtype_lib.CreatorId(author_id))
+    def get_record_information(author_id=None):
+        if author_id is None:
+            author_id = idtype_lib.CreatorId(Scanner.scan_type(int, "Ваш id: "))
+        return record_information_lib.RecordInformation(author_id)
 
     @staticmethod
-    def get_post():
-        record_info = Scanner.get_record_information()
-        content = Scanner.get_content()
-        print(f"id поста: {post_lib.Post.create_post(record_information=record_info, content=content).id.id}")
+    def get_post(author_id=None, raw_content_data=None):
+        record_info = Scanner.get_record_information(author_id)
+        content = Scanner.get_content(raw_content_data)
+        new_post = post_lib.Post.create_post(record_information=record_info, content=content)
+        print(f"id поста: {new_post.id.id}")
+        return new_post
 
     @staticmethod
     def get_comment():
@@ -64,10 +70,11 @@ class Scanner:
         print(f"id комментария: {comment.id.id}")
 
     @staticmethod
-    def get_creator():
-        name = input("Ваше имя: ")
-        print(f"Ваш id: {creator_lib.Creator.create_creator(name=name).id.id}")
-
+    def get_creator(user_name=None):
+        name = user_name or input("Ваше имя: ")
+        new_creator = creator_lib.Creator.create_creator(name=name)
+        print(f"Зарегистрирован пользователь с id: {new_creator.id.id}")
+        return new_creator
 
 class Interface:
     @staticmethod

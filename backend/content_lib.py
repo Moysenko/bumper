@@ -8,7 +8,10 @@ class Content:
         self.tiles = tiles if tiles is not None else []
 
     def add_tile(self, tile):
-        self.tiles.append(tile)
+        if isinstance(tile, Tile):
+            self.tiles.append(tile)
+        else:
+            self.tiles.append(Tile(tile))
 
     def remove_tile(self, index):
         del self.tiles[index]

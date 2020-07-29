@@ -1,4 +1,4 @@
-import database_lib
+from . import database_lib
 
 
 class IdType:

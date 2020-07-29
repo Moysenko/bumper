@@ -1,4 +1,4 @@
-import console_interface_lib
+from . import console_interface_lib
 
 options = {'Зарегистрироваться': console_interface_lib.Scanner.get_creator,
            'Написать комментарий': console_interface_lib.Scanner.get_comment,

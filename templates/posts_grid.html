@@ -1,0 +1,42 @@
+<html>
+   <head>
+      <title>Posts Grid</title>
+      <style>
+          textarea {
+            padding: 10px;
+            vertical-align: top;
+          }
+          textarea:focus {
+            outline-style: solid;
+            outline-width: 2px;
+          }
+
+          .content {
+              margin: auto;
+              width: 50%;
+              border: 3px solid green;
+              padding: 10px;
+          }
+    </style>
+      </style>
+      <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+   </head>
+   <body>
+      <table>
+          <form action="/add_post" method="post">
+              <textarea name="post_text" cols="40" rows="5"></textarea><br>
+              <button type="submit">Add post</button>
+          </form>
+
+          {% for post_id in post_ids %}
+            <div class="content">
+                {% for tile in post_id.instance().content.tiles %}
+                    <p> {{ tile }} </p>
+                {% endfor %}
+            </div>
+
+          {% endfor %}
+      </table>
+      <script src="{{ url_for('static',filename='js/scripts.js') }}"></script>
+   </body>
+</html>

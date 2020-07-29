@@ -1,14 +1,14 @@
-import content_lib
-import comment_lib
-import idtype_lib
+from . import content_lib
+from . import comment_lib
+from . import idtype_lib
 
 
 class Post:
     def __init__(self, record_information, content=None,
                  comments=None, post_id=None):
         self.record_information = record_information
-        self.content = content if content is not None else content_lib.Content()
-        self.comments = comments if comments is not None else comment_lib.CommentSection()
+        self.content = content or content_lib.Content()
+        self.comments = comments or comment_lib.CommentSection()
         self.id = post_id
 
     def add_comment(self, comment):

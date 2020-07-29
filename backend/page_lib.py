@@ -1,4 +1,4 @@
-import feed_lib
+from . import feed_lib
 
 
 class Page:

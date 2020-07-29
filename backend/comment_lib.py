@@ -1,5 +1,5 @@
-import content_lib
-import idtype_lib
+from . import content_lib
+from . import idtype_lib
 from collections import defaultdict
 
 
@@ -47,3 +47,7 @@ class CommentSection:
 
     def __len__(self):
         return len(self._comments)
+
+    def __iter__(self):
+        for comment in self._comments:
+            yield comment
