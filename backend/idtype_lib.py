@@ -28,11 +28,22 @@ class IdType:
 
 class CreatorId(IdType):
     type_name = "creator"
+    username_hashmap = {}
+
+    @classmethod
+    def save_to_database(cls, obj):
+        if obj.name not in cls.username_hashmap:
+            creator_id = super().save_to_database(obj)
+            cls.username_hashmap[obj.name] = creator_id
+        return cls.username_hashmap[obj.name]
+
+    @classmethod
+    def id_by_name(cls, name):
+        return cls.username_hashmap[name]
 
 
 class PostId(IdType):
     type_name = "post"
-
 
 class CommentId(IdType):
     type_name = "comment"

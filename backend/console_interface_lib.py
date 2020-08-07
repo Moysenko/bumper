@@ -43,10 +43,10 @@ class Scanner:
         return record_information_lib.RecordInformation(author_id)
 
     @staticmethod
-    def get_post(author_id=None, raw_content_data=None):
+    def get_post(author_id=None, title=None, raw_content_data=None):
         record_info = Scanner.get_record_information(author_id)
         content = Scanner.get_content(raw_content_data)
-        new_post = post_lib.Post.create_post(record_information=record_info, content=content)
+        new_post = post_lib.Post.create_post(record_information=record_info, title=title, content=content)
         print(f"id поста: {new_post.id.id}")
         return new_post
 
@@ -70,9 +70,8 @@ class Scanner:
         print(f"id комментария: {comment.id.id}")
 
     @staticmethod
-    def get_creator(user_name=None):
-        name = user_name or input("Ваше имя: ")
-        new_creator = creator_lib.Creator.create_creator(name=name)
+    def get_creator(*args, **kwargs):
+        new_creator = creator_lib.Creator.create_creator(*args, **kwargs)
         print(f"Зарегистрирован пользователь с id: {new_creator.id.id}")
         return new_creator
 
