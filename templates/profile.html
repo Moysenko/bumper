@@ -54,26 +54,10 @@
             </form>
             </div>
 
-
-           
             <div class="wrapper">
             <div class="masonry bordered">
                 {% for post_id in post_ids %}
-                    <div class="brick">
-                        <!-- Title -->
-                        <h1> {{ post_id.instance().title }} </h1>
-                        
-                        {% if post_id.instance().thumbnail() is not none %}
-                            <img src="{{ post_id.instance().thumbnail() }}" alt="thumbnail">
-                        {% endif %}
-
-                        {% for tile in post_id.instance().content.tiles %}
-                            <div class="desc">
-                                <p> {{ tile }} </p>
-                            </div>
-                        {% endfor %}
-
-                    </div>
+                    {%  include 'post.html' %}
                 {% endfor %}
             </div>
             </div>

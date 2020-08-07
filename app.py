@@ -12,31 +12,35 @@ app.secret_key = os.urandom(16)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-admin = Scanner.get_creator('Admin')
+admin = Scanner.get_creator(name='admin', password="admin")
 feed = Feed(admin.id)
 
 uploads_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                          'static', 'thumbnails')
+                           'static', 'thumbnails')
+
 
 # Flask-Login requirement
 @login_manager.user_loader
-def load_user(id):
-    return CreatorId(int(id)).instance()
+def load_user(user_id):
+    return CreatorId(int(user_id)).instance()
+
 
 # HTML PAGES
 @app.route('/', methods=['GET'])
 def index():
     return redirect('/feed')
 
+
 @app.route('/feed', methods=['GET'])
 def feed_page():
-    return render_template('posts_grid.html', post_ids = feed.load_all_posts(True))
+    return render_template('feed.html', post_ids = feed.load_all_posts(True))
+
 
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile_page():
     user = CreatorId.id_by_name(current_user.name).instance()
-    return render_template('profile_page.html', post_ids=user.posts)
+    return render_template('profile.html', post_ids=user.posts)
 
 
 # ADD POST
@@ -59,6 +63,7 @@ def feed_page__add_post():
     new_post_from_request()
     return redirect('/feed')
 
+
 @app.route('/profile_page/add_post', methods=['POST'])
 def profile_page__add_post():
     new_post_from_request()
@@ -80,6 +85,7 @@ def login():
     login_user(user)
 
     return redirect('/feed')
+
 
 @app.route('/logout', methods=['POST'])
 def logout():

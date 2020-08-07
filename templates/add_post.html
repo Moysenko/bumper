@@ -1,0 +1,13 @@
+<div class="add_post">
+    <form action="/feed/add_post" method="post" enctype=multipart/form-data>
+        <textarea name="title" placeholder="Title" style="width:70%;height:13%"></textarea>
+        <div class="center_all">
+            <label class="custom-file-upload">
+                <input type="file" name="thumbnail"/>
+                Choose a thumbnail from your local files...
+            </label>
+        </div>
+        <textarea name="post_text" placeholder="Anything new?" style="height:50%"></textarea><br>
+        <button type="submit" style="float:right">Add post</button>
+    </form>
+</div>

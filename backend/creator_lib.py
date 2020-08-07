@@ -21,6 +21,10 @@ class Creator:
 
     @staticmethod
     def create_creator(*args, **kwargs):
+        # check whether user with such name already exists
+        if 'name' in kwargs and idtype_lib.CreatorId.id_by_name(kwargs.get('name')) is not None:
+            return idtype_lib.CreatorId.id_by_name(kwargs.get('name')).instance()
+
         new_creator = Creator(*args, **kwargs)
         if new_creator.id is None:
             new_creator.id = idtype_lib.CreatorId.save_to_database(new_creator)
