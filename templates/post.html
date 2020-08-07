@@ -1,6 +1,5 @@
 <div class="brick">
     <!-- Title -->
-    <h3> Author: <i>{{ post_id.instance().record_information.author_id.instance().name }}</i></h3>
     <h1> {{ post_id.instance().title }} </h1>
 
     {% if post_id.instance().thumbnail() is not none %}
@@ -12,5 +11,5 @@
             <p> {{ tile }} </p>
         </div>
     {% endfor %}
-
+    <p style="font-size: 15px"> Author: <i>{{ post_id.instance().record_information.author_id.instance().name }}</i></p>
 </div>
