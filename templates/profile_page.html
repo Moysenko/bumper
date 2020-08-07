@@ -1,0 +1,84 @@
+<html class="has-lab-nav-bottom lab-theme-light">
+    <head>
+        <meta content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/labs.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+        <title>Posts Grid</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    </head>
+
+
+    <body class="labs-template-default single single-labs postid-2409 logged-in admin-bar no-customize-support">
+    <div class="topnav">
+        <!--
+        <a class="active" href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        -->
+        {% if current_user.is_authenticated %}
+        <a class="active" href="/profile">Profile</a>
+        {% endif %}
+        <a href="/feed">Feed</a>
+
+        <div class="login-container">
+            {% if not current_user.is_authenticated %}
+            <form action="/login" method="post">
+                <input type="text" placeholder="Username" name="username">
+                <input type="text" placeholder="Password" name="password">
+                <button type="submit">Login</button>
+            </form>
+            {% else %}
+            <form action="/logout" method="post">
+                <button type="submit" id="logout_button">Logout</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>    
+
+
+
+        <div class="container">
+
+        <!-- Form for adding new posts -->
+            <div class="add_post">
+            <form action="/feed/add_post" method="post" enctype=multipart/form-data>
+                <textarea name="title" placeholder="Title" style="width:70%;height:13%"></textarea>
+                <div class="center_all">
+                <label class="custom-file-upload">
+                    <input type="file" name="thumbnail"/>
+                    Choose a thumbnail from your local files...
+                </label>
+                </div>
+                <textarea name="post_text" placeholder="Anything new?" style="height:50%"></textarea><br>
+                <button type="submit" style="float:right">Add post</button>
+            </form>
+            </div>
+
+
+           
+            <div class="wrapper">
+            <div class="masonry bordered">
+                {% for post_id in post_ids %}
+                    <div class="brick">
+                        <!-- Title -->
+                        <h1> {{ post_id.instance().title }} </h1>
+                        
+                        {% if post_id.instance().thumbnail() is not none %}
+                            <img src="{{ post_id.instance().thumbnail() }}" alt="thumbnail">
+                        {% endif %}
+
+                        {% for tile in post_id.instance().content.tiles %}
+                            <div class="desc">
+                                <p> {{ tile }} </p>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                {% endfor %}
+            </div>
+            </div>
+
+        </div>
+    </body
+  
+</html>
