@@ -1,0 +1,13 @@
+<div class="login-container">
+    {% if not current_user.is_authenticated %}
+        <form action="/login" method="post">
+            <input type="text" placeholder="Username" name="username">
+            <input type="text" placeholder="Password" name="password">
+            <button type="submit">Login / Register</button>
+        </form>
+    {% else %}
+        <form action="/logout" method="post">
+            <button type="submit" id="logout_button">Logout</button>
+        </form>
+    {% endif %}
+</div>

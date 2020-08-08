@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, session, flash
+from flask import Flask, request, render_template, redirect, flash, url_for
 from backend.feed_lib import Feed
 from backend.console_interface_lib import Scanner
 import os
@@ -12,31 +12,37 @@ app.secret_key = os.urandom(16)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-admin = Scanner.get_creator('Admin')
+admin = Scanner.get_creator(name='admin', password="admin")
 feed = Feed(admin.id)
 
 uploads_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                          'static', 'thumbnails')
+                           'static', 'thumbnails')
+
 
 # Flask-Login requirement
 @login_manager.user_loader
-def load_user(id):
-    return CreatorId(int(id)).instance()
+def load_user(user_id):
+    return CreatorId(int(user_id)).instance()
+
 
 # HTML PAGES
 @app.route('/', methods=['GET'])
 def index():
     return redirect('/feed')
 
+
 @app.route('/feed', methods=['GET'])
 def feed_page():
-    return render_template('posts_grid.html', post_ids = feed.load_all_posts(True))
+    return render_template('feed.html', post_ids=feed.load_all_posts(True),
+                           show_post_editor=request.args.get('show_post_editor', default=False))
+
 
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile_page():
     user = CreatorId.id_by_name(current_user.name).instance()
-    return render_template('profile_page.html', post_ids=user.posts)
+    return render_template('profile.html', post_ids=user.posts,
+                           show_post_editor=request.args.get('show_post_editor', default=False))
 
 
 # ADD POST
@@ -54,15 +60,20 @@ def new_post_from_request():
         thumbnail.save(os.path.join(uploads_dir, filename))
 
 
-@app.route('/feed/add_post', methods=['POST'])
-def feed_page__add_post():
+@app.route('/add_post', methods=['POST'])
+def add_post():
     new_post_from_request()
     return redirect('/feed')
 
-@app.route('/profile_page/add_post', methods=['POST'])
-def profile_page__add_post():
-    new_post_from_request()
-    return redirect('/profile')
+
+@app.route('/show_post_editor', methods=['POST'])
+def post_editor():
+    return redirect(url_for('feed_page', show_post_editor=True))
+
+
+@app.route('/hide_post_editor', methods=['POST'])
+def hide_editor():
+    return redirect(url_for('feed_page'))
 
 
 # AUTHORIZATION
@@ -80,6 +91,7 @@ def login():
     login_user(user)
 
     return redirect('/feed')
+
 
 @app.route('/logout', methods=['POST'])
 def logout():

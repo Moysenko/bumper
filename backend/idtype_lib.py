@@ -39,7 +39,7 @@ class CreatorId(IdType):
 
     @classmethod
     def id_by_name(cls, name):
-        return cls.username_hashmap[name]
+        return cls.username_hashmap.get(name)
 
 
 class PostId(IdType):
