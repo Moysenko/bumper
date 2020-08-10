@@ -1,6 +1,7 @@
+<!DOCTYPE html>
 <div class="brick">
     <!-- Title -->
-    <h1> {{ post_id.instance().title }} </h1>
+    <h2 class="title is-2"> {{ post_id.instance().title }} </h2>
 
     {% if post_id.instance().thumbnail() is not none %}
         <img src="{{ post_id.instance().thumbnail() }}" alt="thumbnail">
