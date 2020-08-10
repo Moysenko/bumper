@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, redirect, flash, url_for
 from backend.feed_lib import Feed
 from backend.console_interface_lib import Scanner
 import os
-from markupsafe import escape
 from backend.idtype_lib import CreatorId
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 
@@ -82,6 +81,9 @@ def login():
     if current_user.is_authenticated:
         return redirect('/feed')
 
+    if not CreatorId.does_name_exist(request.form['username']):
+        return redirect('/feed')
+
     user = Scanner.get_creator(name=request.form['username'],
                                password=request.form['password'])
     if user is None or not user.check_password(request.form['password']):
@@ -93,9 +95,35 @@ def login():
     return redirect('/feed')
 
 
-@app.route('/logout', methods=['POST'])
+@app.route('/logout', methods=['GET'])
 def logout():
     logout_user()
+    return redirect('/feed')
+
+
+@app.route('/signup_page', methods=['GET'])
+def signup_page():
+    if current_user.is_authenticated:
+        return redirect('/feed')
+    return render_template('signup.html')
+
+
+@app.route('/signin_page', methods=['GET'])
+def signin_page():
+    if current_user.is_authenticated:
+        return redirect('/feed')
+    return render_template('signin.html')
+
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    if CreatorId.does_name_exist(request.form['username']): # name already exists
+        flash('Username is already in use'.format(request.form['username']))
+        return redirect('/signup_page')
+
+    user = Scanner.get_creator(name=request.form['username'],
+                               password=request.form['password'])
+    login_user(user)
     return redirect('/feed')
 
 

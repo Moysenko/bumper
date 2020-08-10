@@ -41,6 +41,10 @@ class CreatorId(IdType):
     def id_by_name(cls, name):
         return cls.username_hashmap.get(name)
 
+    @classmethod
+    def does_name_exist(cls, name):
+        return cls.username_hashmap.get(name) is not None
+
 
 class PostId(IdType):
     type_name = "post"
