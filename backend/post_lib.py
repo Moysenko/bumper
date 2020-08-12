@@ -25,16 +25,6 @@ class Post:
         return new_post
 
     def thumbnail(self):
-        thumbnails_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)),
-                                      os.pardir, 'static', 'thumbnails')
-
-        allowed_image_formats = ['.jpg', '.png', '.jpeg']
-        for ending in allowed_image_formats:
-            filename = str(self.id.id) + ending
-            absolute_filename = os.path.join(thumbnails_dir, filename)
-            if os.path.isfile(absolute_filename):
-                return os.path.join('static', 'thumbnails', filename)
-
-        return None
+        return self.id.icon('thumbnails')
 
 

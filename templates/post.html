@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <div class="brick">
     <!-- Title -->
-    <h2 class="title is-2"> {{ post_id.instance().title }} </h2>
+    <h3 class="title is-3"> {{ post_id.instance().title }} </h3>
 
     {% if post_id.instance().thumbnail() is not none %}
-        <img src="{{ post_id.instance().thumbnail() }}" alt="thumbnail">
+        <img src="{{ url_for('static', filename=post_id.instance().thumbnail()) }}" alt="thumbnail">
     {% endif %}
 
     {% for tile in post_id.instance().content.tiles %}

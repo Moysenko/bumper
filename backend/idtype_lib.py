@@ -1,4 +1,5 @@
 from . import database_lib
+import os
 
 
 class IdType:
@@ -25,6 +26,19 @@ class IdType:
     def __eq__(self, other):
         return self.id == other.id
 
+    def icon(self, icons_dir):
+        static_icons_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)),
+                                        os.pardir, 'static', icons_dir)
+
+        allowed_image_formats = ['.jpg', '.png', '.jpeg']
+        for ending in allowed_image_formats:
+            filename = str(self.id) + ending
+            absolute_filename = os.path.join(static_icons_dir, filename)
+            if os.path.isfile(absolute_filename):
+                return os.path.join(icons_dir, filename)
+
+        return None
+
 
 class CreatorId(IdType):
     type_name = "creator"
@@ -48,6 +62,7 @@ class CreatorId(IdType):
 
 class PostId(IdType):
     type_name = "post"
+
 
 class CommentId(IdType):
     type_name = "comment"

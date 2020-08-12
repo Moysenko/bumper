@@ -1,0 +1,26 @@
+<div class="box">
+    <article class="media">
+        <div class="media-left">
+            <img src="{{ url_for('static', filename=current_user.icon()) }}" alt="Image" width="200">
+        </div>
+        <div class="media-content">
+            <div class="content">
+                <p>
+                    <strong>{{ current_user.name }}</strong>
+                    <br>
+                    {{ current_user.info_line }}
+                </p>
+            </div>
+            <nav class="level is-mobile">
+                <div class="level-left">
+                    <a class="level-item" aria-label="profile_settings" href="/profile_settings">
+                        <span class="icon is-small">
+                          <i class="fas fa-cog" aria-hidden="true"></i>
+                        </span>
+                    </a>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </article>
+</div>
