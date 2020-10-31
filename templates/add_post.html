@@ -1,27 +1,52 @@
 {% if not show_post_editor %}
-    <div class="show_post_editor_button">
+    <div class="column is-8 is-offset-2">
         <form action="/show_post_editor" method="post" enctype="multipart/form-data">
-            <button type="submit">Add post</button>
+            <button class="button is-block is-info is-medium is-fullwidth">Show post editor</button>
         </form>
     </div>
 {% else %}
-    <div class="show_post_editor_button">
+    <div class="column is-8 is-offset-2">
         <form action="/hide_post_editor" method="post" enctype="multipart/form-data">
-            <button type="submit">Hide</button>
+            <button class="button is-block is-info is-medium is-fullwidth">Hide post editor</button>
         </form>
     </div>
 
-    <div class="add_post">
-        <form action="/add_post" method="post" enctype=multipart/form-data>
-            <textarea name="title" placeholder="Title" style="width:70%;height:13%"></textarea>
-            <div class="center_all">
-                <label class="custom-file-upload">
-                    <input type="file" name="thumbnail"/>
-                    Choose a thumbnail from your local files...
-                </label>
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-8 is-offset-2">
+                <h4 class="title is-4">Add Post</h4>
+                <div class="box">
+                    <form method="POST" action="/add_post" enctype="multipart/form-data">
+                        <div class="field">
+                            <div class="control">
+                                <input class="input" type="text" name="title" placeholder="Title" autofocus="">
+                            </div>
+                        </div>
+
+                        <div class="file is-light is-boxed is-fullwidth">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="thumbnail">
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">
+                                        Choose a thumbnail from your local files...
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+                        <br>
+
+                        <div class="control">
+                            <textarea class="textarea has-fixed-size" name="post_text" placeholder="Anything new?"></textarea>
+                        </div>
+                        <br>
+
+                        <button class="button is-block is-info is-medium is-fullwidth">Add Post</button>
+                    </form>
+                </div>
             </div>
-            <textarea name="post_text" placeholder="Anything new?" style="height:50%"></textarea><br>
-            <button type="submit" style="float:right">Add post</button>
-        </form>
+        </div>
     </div>
 {% endif %}

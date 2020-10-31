@@ -39,6 +39,9 @@ def feed_page():
 @app.route('/profile', methods=['GET'])
 @login_required
 def profile_page():
+    if not current_user.is_authenticated:
+        return redirect('/feed')
+
     user = CreatorId.id_by_name(current_user.name).instance()
     return render_template('profile.html', post_ids=user.posts,
                            show_post_editor=request.args.get('show_post_editor', default=False))
@@ -125,6 +128,15 @@ def signup():
                                password=request.form['password'])
     login_user(user)
     return redirect('/feed')
+
+
+# Profile settings
+@app.route('/profile_settings', methods=['GET', 'POST'])
+def profile_settings():
+    if request.method == 'GET':
+        return render_template('profile_settings.html')
+    else:
+        pass
 
 
 if __name__ == '__main__':

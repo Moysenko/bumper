@@ -1,15 +1,17 @@
 from . import idtype_lib
 from . import post_lib
+import os
 
 
 class Creator:
-    def __init__(self, creator_id=None, face=None, name=None, password=None, subs=None, posts=None):
+    def __init__(self, creator_id=None, face=None, name=None, password=None, subs=None, posts=None, info_line=None):
         self.face = face
         self.name = name
         self.id = creator_id
-        self.subscriptions = subs if subs is not None else []
-        self.posts = posts if posts is not None else []
+        self.subscriptions = subs or []
+        self.posts = posts or []
         self.password = password
+        self.info_line = info_line or ""
 
         # Flask-Login requirements
         self.is_authenticated = True
@@ -36,3 +38,7 @@ class Creator:
 
     def check_password(self, password):
         return self.password == password
+
+    def icon(self):
+        user_icon = self.id.icon(os.path.join('user_files', 'icons'))
+        return user_icon or os.path.join('user_files', 'icons', 'duck.jpg')
